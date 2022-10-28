@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -8,9 +9,13 @@ public class Main {
     private static ArrayList<ArrayList<Integer>> row_constraints;
     private static ArrayList<ArrayList<Integer>> col_constraints;
 
+    private static ArrayList<ArrayList<String>> board;
+    private static ArrayList<ArrayList<ArrayList<String>>> domain;
+
     public static void main(String[] args) {
         File file = new File("/media/arya/hdd6t/artificial-intelligence/csp/nonogram/inputs/input1.txt");
         Scanner scanner;
+
         try {
             scanner = new Scanner(file);
             n = scanner.nextInt();
@@ -38,12 +43,30 @@ public class Main {
 
             scanner.close();
 
+            board = new ArrayList<>(n);
+            domain = new ArrayList<>(n);
+
+            for (int i = 0; i < n; i++) {
+                board.add(new ArrayList<>());
+                domain.add(new ArrayList<>());
+
+                for (int j = 0; j < n; j++) {
+                    board.get(i).add("E");
+                    domain.get(i).add(new ArrayList<>(Arrays.asList(
+                        "F",
+                        "X"
+                    )));
+                }
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        System.out.println(row_constraints.toString());
-        System.out.println(col_constraints.toString());
+
+        State state = new State(board, domain);
+        Nonogram nonogram = new Nonogram(state, row_constraints, col_constraints);
+        nonogram.start();
         
     }
 }
