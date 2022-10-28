@@ -40,6 +40,7 @@ public class Nonogram {
         return true;
     }
 
+    
     private boolean isConsistent(State state) {
         
         ArrayList<ArrayList<String>> cBoard = state.getBoard();
