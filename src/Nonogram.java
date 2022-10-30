@@ -140,9 +140,8 @@ public class Nonogram {
         return true;
     }
 
-    
     private boolean isConsistent(State state) {
-        
+
         ArrayList<ArrayList<String>> cBoard = state.getBoard();
         //check row constraints
         for (int i = 0; i < n; i++) {
@@ -169,7 +168,7 @@ public class Nonogram {
             if (count_f != sum && count_e == 0) {
                 return false;
             }
-            
+
             Queue<Integer> constraints = new LinkedList<>();
             constraints.addAll(row_constraints.get(i));
             int count = 0;
@@ -178,6 +177,8 @@ public class Nonogram {
                 if (cBoard.get(i).get(j).equals("F")) {
                     flag = true;
                     count++;
+                } else if (cBoard.get(i).get(j).equals("E")) {
+                    break;
                 } else if (cBoard.get(i).get(j).equals("X")) {
                     if (flag) {
                         flag = false;
@@ -213,13 +214,13 @@ public class Nonogram {
                     count_x++;
                 }
             }
-            if (count_x > n -sum) {
+            if (count_x > n - sum) {
                 return false;
             }
             if (count_f != sum && count_e == 0) {
                 return false;
             }
-            
+
             Queue<Integer> constraints = new LinkedList<>();
             constraints.addAll(col_constraints.get(j));
             int count = 0;
@@ -228,6 +229,8 @@ public class Nonogram {
                 if (cBoard.get(i).get(j).equals("F")) {
                     flag = true;
                     count++;
+                } else if (cBoard.get(i).get(j).equals("E")) {
+                    break;
                 } else if (cBoard.get(i).get(j).equals("X")) {
                     if (flag) {
                         flag = false;
