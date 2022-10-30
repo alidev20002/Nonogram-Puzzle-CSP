@@ -46,13 +46,59 @@ public class Nonogram {
             if (!isConsistent(newState)) {
                 continue;
             }
-
+            updateDomains(mrvRes[0], mrvRes[1], newState);
             if (backtrack(newState)) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private void updateDomains(int i, int j, State newState) {
+        int sum_row = 0;
+        int sum_col = 0;
+        int sumRowFill = 0;
+        int sumColFill = 0;
+
+        for (int counter = 0; counter < row_constraints.get(i).size(); counter++) {
+            sum_row += row_constraints.get(i).get(counter);
+        }
+        for (int counter = 0; counter < col_constraints.get(j).size(); counter++) {
+            sum_col += col_constraints.get(j).get(counter);
+        }
+
+        for (int row = 0; row < n; row++) {
+            if (newState.getBoard().get(row).get(j).equals("F")) {
+                sumColFill++;
+            }
+        }
+
+        for (int col = 0; col < n; col++) {
+            if (newState.getBoard().get(i).get(col).equals("F")) {
+                sumRowFill++;
+            }
+        }
+
+        if (sumColFill == sum_col) {
+            for (int row = 0; row < n; row++){
+                if (!newState.getBoard().get(row).get(j).equals("F")) {
+                    newState.setIndexBoard(row, j, "X");
+                    newState.removeIndexDomain(row, j,"F");
+                    newState.removeIndexDomain(row, j,"X");
+                }
+            }
+        }
+
+        if (sumRowFill == sum_row) {
+            for (int col = 0; col < n; col++){
+                if (!newState.getBoard().get(i).get(col).equals("F")) {
+                    newState.setIndexBoard(i, col, "X");
+                    newState.removeIndexDomain(i, col,"F");
+                    newState.removeIndexDomain(i, col,"X");
+                }
+            }
+        }
     }
 
     private ArrayList<String> LCV (State state, int[] var) {
